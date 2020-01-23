@@ -1,6 +1,8 @@
 # bpsg: best partial solution graph
 def get_unexpanded_states(mdp, bpsg):
-    pass
+    return list(
+        filter(lambda x: mdp[x]["expanded"], bpsg.keys())
+    )
 
 
 def expand_state(s, mdp, explicit_graph):
