@@ -13,8 +13,11 @@ def init_graph(graph):
     return {k: {"expanded": False, **v} for k, v in graph.items()}
 
 
-def add_state_graph(s, mdp):
-    pass
+def add_state_graph(s, graph):
+    graph_ = graph.copy()
+    graph_[str(s)] = {}
+
+    return graph_
 
 # "I.e., only include ancestors states from which
 #   the expanded state can be reached by following the current best solution"

@@ -69,6 +69,17 @@ class TestMDPGraph(unittest.TestCase):
         unexpanded = mdp_graph.get_unexpanded_states(mdp_g, bpsg)
         self.assertListEqual(unexpanded, ['1'])
 
+    def test_add_state_graph(self):
+        g_ = mdp_graph.add_state_graph('4', graph)
+        g__ = mdp_graph.add_state_graph(4, graph)
+
+        assert '4' in g_
+        g_.pop('4')
+        assert g_ == graph
+        assert '4' in g__
+        g__.pop('4')
+        assert g__ == graph
+
     # def test_unexpanded_states_2(self):
     #    mdp_g = mdp_graph.init_graph(graph)
     #    mdp_g['1']['expanded'] = True
