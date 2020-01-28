@@ -6,7 +6,23 @@ def get_unexpanded_states(mdp, bpsg):
 
 
 def expand_state(s, mdp, explicit_graph):
-    pass
+
+    # Ver estados vizinhos de 's' no mdp que não foram expandidos
+    neighbour_states = map(lambda _s: _s["name"], mdp[s]['Adj'])
+    unexpanded_neighbours = filter(
+        lambda _s: not mdp[_s]['expanded'], neighbour_states)
+
+    # - Adicionar novos estados vazios na lista de adjacências do vértice 's'
+    new_explicit_graph = explicit_graph
+    for n in unexpanded_neighbours:
+        new_explicit_graph = add_state_graph(n, new_explicit_graph)
+        mdp_n_obj = next(filter(lambda _s: _s["name"] == n, mdp[s]["Adj"]))
+        new_explicit_graph[s]["Adj"].append({
+            "name": n,
+            "A": mdp_n_obj
+        })
+
+    return new_explicit_graph
 
 
 def init_graph(graph):
@@ -15,7 +31,7 @@ def init_graph(graph):
 
 def add_state_graph(s, graph):
     graph_ = graph.copy()
-    graph_[str(s)] = {}
+    graph_[str(s)] = {'Adj': []}
 
     return graph_
 

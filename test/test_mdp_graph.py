@@ -80,9 +80,17 @@ class TestMDPGraph(unittest.TestCase):
         g__.pop('4')
         assert g__ == graph
 
-    # def test_unexpanded_states_2(self):
-    #    mdp_g = mdp_graph.init_graph(graph)
-    #    mdp_g['1']['expanded'] = True
+    def test_expand_state(self):
+        init_state = '1'
+        explicit_graph = mdp_graph.add_state_graph(init_state, {})
+        mdp_g = mdp_graph.init_graph(graph)
+        init_state_neighbours = map(
+            lambda _s: _s["name"], mdp_g[init_state]['Adj'])
+        new_explicit_graph = mdp_graph.expand_state(
+            init_state, mdp_g, explicit_graph)
 
-    #    unexpanded = mdp_graph.get_unexpanded_states(mdp_g, bpsg)
-    #    self.assertListEqual(unexpanded, ['1'])
+        for s in init_state_neighbours:
+            assert s in new_explicit_graph
+
+        init_state_new_neighbours_explicit = map(
+            lambda s: s["name"], new_explicit_graph[init_state]['Adj'])
