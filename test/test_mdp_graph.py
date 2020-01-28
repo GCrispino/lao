@@ -50,6 +50,72 @@ bpsg = {
     "1": {"Adj": []},
 }
 
+bpsg_2 = {
+    "1": {
+        "Adj": [
+            {
+                "name": "1",
+                "A": {
+                    "E": 0.5,
+                }
+            },
+            {
+                "name": "2",
+                "A": {"E": 0.5}
+            }
+        ]
+    },
+    "2": {
+        "Adj": [
+            {
+                "name": "2",
+                "A": {
+                    "E": 0.5,
+                }
+            },
+            {
+                "name": "3",
+                "A": {"E": 0.5}
+            }
+        ]
+    },
+    "3": {
+        "Adj": [{
+            "name": "3",
+            "A": {
+                "N": 1,
+            }
+        }]
+    },
+}
+
+bpsg_3 = {
+    "1": {
+        "Adj": [
+            {
+                "name": "1",
+                "A": {
+                    "E": 0.5,
+                }
+            },
+            {
+                "name": "2",
+                "A": {"E": 0.5}
+            }
+        ]
+    },
+    "2": {
+        "Adj": [
+            {
+                "name": "2",
+                "A": {
+                    "E": 0.5,
+                }
+            }
+        ]
+    }
+}
+
 
 class TestMDPGraph(unittest.TestCase):
     def test_init_graph(self):
@@ -94,3 +160,18 @@ class TestMDPGraph(unittest.TestCase):
 
         init_state_new_neighbours_explicit = map(
             lambda s: s["name"], new_explicit_graph[init_state]['Adj'])
+
+    def test_find_ancestors(self):
+        ancestors = mdp_graph.find_ancestors('1', bpsg)
+
+        self.assertListEqual(ancestors, [])
+
+    def test_find_ancestors_2(self):
+        # Test for second bpsg example
+        ancestors = set(mdp_graph.find_ancestors('3', bpsg_2))
+        self.assertSetEqual(ancestors, set(['1', '2']))
+
+    def test_find_ancestors_3(self):
+        # Test for third bpsg example
+        ancestors = set(mdp_graph.find_ancestors('2', bpsg_3))
+        self.assertSetEqual(ancestors, set(['1']))

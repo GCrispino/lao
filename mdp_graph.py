@@ -39,8 +39,21 @@ def add_state_graph(s, graph):
 #   the expanded state can be reached by following the current best solution"
 
 
-def find_ancestors(s, mdp):
-    pass
+def find_ancestors(s, bpsg):
+    # Find states in bpsg that have 's' in the adjacent list (except from 's' itself):
+    direct_ancestors = list(
+        filter(lambda s_: s_ != s and len(
+            list(filter(lambda s__: s__['name'] == s, bpsg[s_]['Adj']))
+        ) > 0, bpsg)
+    )
+
+    result = [] + direct_ancestors
+
+    for a in direct_ancestors:
+        result += find_ancestors(a, bpsg)
+
+    print('result: ', s, result)
+    return result
 
 
 def value_iteration(V, mdp):
