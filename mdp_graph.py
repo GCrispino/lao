@@ -52,9 +52,23 @@ def find_ancestors(s, bpsg):
     for a in direct_ancestors:
         result += find_ancestors(a, bpsg)
 
-    print('result: ', s, result)
     return result
 
 
 def value_iteration(V, mdp):
     pass
+def find_reachable(s, a, mdp):
+    """ Find states that are reachable from state 's' after executing action 'a' """
+    # TODO: Escrever testes para essa função
+    all_reachable_from_s = mdp[s]['Adj']
+    reachable_from_s_a_obj = filter(
+        lambda obj_s_: a in obj_s_['A'],
+        all_reachable_from_s
+    )
+    return list(
+        map(
+            lambda s_: s_['name'],
+            reachable_from_s_a_obj
+        )
+    )
+

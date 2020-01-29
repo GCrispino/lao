@@ -175,3 +175,24 @@ class TestMDPGraph(unittest.TestCase):
         # Test for third bpsg example
         ancestors = set(mdp_graph.find_ancestors('2', bpsg_3))
         self.assertSetEqual(ancestors, set(['1']))
+
+    def test_find_reachable(self):
+        reachable_1_n = mdp_graph.find_reachable('1', 'N', graph)
+        reachable_1_e = mdp_graph.find_reachable('1', 'E', graph)
+        reachable_2_e = mdp_graph.find_reachable('2', 'E', graph)
+        reachable_2_s = mdp_graph.find_reachable('2', 'S', graph)
+
+        self.assertListEqual(reachable_1_n, ['1'])
+        self.assertListEqual(reachable_1_e, ['1', '2'])
+        self.assertListEqual(reachable_2_e, ['2', '3'])
+        self.assertListEqual(reachable_2_s, ['2'])
+
+    def test_value_iteration_z(self):
+        # Test value iteration after expanding state '1'
+        Z = [1]
+        assert False
+
+    def test_value_iteration_z_2(self):
+        # Test value iteration after expanding state '2'
+        Z = [1, 2]
+        assert False
