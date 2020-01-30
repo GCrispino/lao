@@ -182,10 +182,50 @@ class TestMDPGraph(unittest.TestCase):
         reachable_2_e = mdp_graph.find_reachable('2', 'E', graph)
         reachable_2_s = mdp_graph.find_reachable('2', 'S', graph)
 
-        self.assertListEqual(reachable_1_n, ['1'])
-        self.assertListEqual(reachable_1_e, ['1', '2'])
-        self.assertListEqual(reachable_2_e, ['2', '3'])
-        self.assertListEqual(reachable_2_s, ['2'])
+        self.assertListEqual(reachable_1_n, [{
+            'name': '1',
+            "A": {
+                "N": 1,
+                "S": 1,
+                "E": 0.5,
+            }
+        }])
+        self.assertListEqual(reachable_1_e, [
+            {
+                "name": "1",
+                "A": {
+                    "N": 1,
+                    "S": 1,
+                    "E": 0.5,
+                }
+            },
+            {
+                "name": "2",
+                "A": {"E": 0.5}
+            }
+        ])
+        self.assertListEqual(reachable_2_e, [
+            {
+                "name": "2",
+                "A": {
+                    "N": 1,
+                    "S": 1,
+                    "E": 0.5,
+                }
+            },
+            {
+                "name": "3",
+                "A": {"E": 0.5}
+            }
+        ])
+        self.assertListEqual(reachable_2_s, [{
+            "name": "2",
+            "A": {
+                "N": 1,
+                "S": 1,
+                "E": 0.5,
+            }
+        }])
 
     def test_value_iteration_z(self):
         # Test value iteration after expanding state '1'
