@@ -259,3 +259,14 @@ class TestMDPGraph(unittest.TestCase):
         arrays_diff = np.linalg.norm(V_ - expected, np.inf)
 
         assert arrays_diff < epsilon
+
+    def test_value_iteration_2(self):
+        Z = ['1', '2']
+        V = np.array([3.0, 1.0, 0.0])
+
+        epsilon = 1e-3
+        V_ = mdp_graph.value_iteration(V, V_i, A, Z, graph, 1, epsilon)
+        expected = np.array([4.0, 2.0, 0.0])
+        arrays_diff = np.linalg.norm(V_ - expected, np.inf)
+
+        assert arrays_diff < epsilon
