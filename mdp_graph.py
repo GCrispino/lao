@@ -81,5 +81,15 @@ def bellman(V, V_i,  A, Z, mdp, c=1):
     return V_
 
 
-def value_iteration(V, A, Z, mdp, c=1, epsilon=1e-3):
-    pass
+def value_iteration(V, V_i, A, Z, mdp, c=1, epsilon=1e-3, n_iter=1000):
+
+    i = 1
+    while(True):
+        V_ = bellman(V, V_i, A, Z, mdp, c)
+        if i == n_iter or np.linalg.norm(V_ - V, np.inf) < epsilon:
+            break
+        V = V_
+
+        i += 1
+
+    return V_
