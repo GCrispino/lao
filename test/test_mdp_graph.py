@@ -116,6 +116,8 @@ bpsg_3 = {
     }
 }
 
+A = ['N', 'S', 'E']
+
 
 class TestMDPGraph(unittest.TestCase):
     def test_init_graph(self):
@@ -227,12 +229,19 @@ class TestMDPGraph(unittest.TestCase):
             }
         }])
 
-    def test_value_iteration_z(self):
-        # Test value iteration after expanding state '1'
-        Z = [1]
-        assert False
+    def test_bellman(self):
+        # Test bellman equation after expanding state '1'
+        Z = ['1']
+        V = {'1': 2, '2': 1, '3': 0}
+        V_ = mdp_graph.bellman(V, A, Z, graph)
 
-    def test_value_iteration_z_2(self):
-        # Test value iteration after expanding state '2'
-        Z = [1, 2]
-        assert False
+        self.assertDictEqual(V_, {'1': 2.5, '2': 1, '3': 0})
+
+    def test_bellman_2(self):
+        # Test bellman equation after expanding state '2'
+        Z = ['1', '2']
+
+        V = {'1': 3, '2': 1, '3': 0}
+        V_ = mdp_graph.bellman(V, A, Z, graph)
+
+        self.assertDictEqual(V_, {'1': 3, '2': 1.5, '3': 0})

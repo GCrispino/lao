@@ -55,20 +55,27 @@ def find_ancestors(s, bpsg):
     return result
 
 
-def value_iteration(V, mdp):
-    pass
 def find_reachable(s, a, mdp):
     """ Find states that are reachable from state 's' after executing action 'a' """
-    # TODO: Escrever testes para essa função
     all_reachable_from_s = mdp[s]['Adj']
-    reachable_from_s_a_obj = filter(
+    return list(filter(
         lambda obj_s_: a in obj_s_['A'],
         all_reachable_from_s
-    )
-    return list(
-        map(
-            lambda s_: s_['name'],
-            reachable_from_s_a_obj
-        )
-    )
+    ))
 
+
+def bellman(V, A, Z, mdp, c=1):
+    V_ = V.copy()
+    for s in Z:
+        actions_results = []
+        for a in A:
+            reachable = find_reachable(s, a, mdp)
+            actions_results.append(c + sum([
+                V[s_['name']] * s_['A'][a] for s_ in reachable]))
+        V_[s] = min(actions_results)
+
+    return V_
+
+
+def value_iteration(V, A, Z, mdp, c=1, epsilon=1e-3):
+    pass
