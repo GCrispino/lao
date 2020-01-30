@@ -1,5 +1,6 @@
 import mdp_graph
 import unittest
+import numpy as np
 
 graph = {
     "1": {
@@ -234,16 +235,17 @@ class TestMDPGraph(unittest.TestCase):
     def test_bellman(self):
         # Test bellman equation after expanding state '1'
         Z = ['1']
-        V = [2, 1, 0]
+        V = np.array([2.0, 1.0, 0.0])
         V_ = mdp_graph.bellman(V, V_i, A, Z, graph)
 
-        self.assertListEqual(V_, [2.5, 1, 0])
+        self.assertListEqual(V_.tolist(), [2.5, 1, 0])
 
     def test_bellman_2(self):
         # Test bellman equation after expanding state '2'
         Z = ['1', '2']
 
-        V = [3, 1, 0]
+        V = np.array([3.0, 1.0, 0.0])
         V_ = mdp_graph.bellman(V, V_i, A, Z, graph)
 
-        self.assertListEqual(V_, [3, 1.5, 0])
+        self.assertListEqual(V_.tolist(), [3, 1.5, 0])
+

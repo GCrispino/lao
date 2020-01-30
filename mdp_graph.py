@@ -1,4 +1,8 @@
+import numpy as np
+
 # bpsg: best partial solution graph
+
+
 def get_unexpanded_states(mdp, bpsg):
     return list(
         filter(lambda x: not mdp[x]["expanded"], bpsg.keys())
@@ -65,7 +69,7 @@ def find_reachable(s, a, mdp):
 
 
 def bellman(V, V_i,  A, Z, mdp, c=1):
-    V_ = V.copy()
+    V_ = np.array(V)
     for i, s in enumerate(Z):
         actions_results = []
         for a in A:
