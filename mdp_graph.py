@@ -64,15 +64,15 @@ def find_reachable(s, a, mdp):
     ))
 
 
-def bellman(V, A, Z, mdp, c=1):
+def bellman(V, V_i,  A, Z, mdp, c=1):
     V_ = V.copy()
-    for s in Z:
+    for i, s in enumerate(Z):
         actions_results = []
         for a in A:
             reachable = find_reachable(s, a, mdp)
             actions_results.append(c + sum([
-                V[s_['name']] * s_['A'][a] for s_ in reachable]))
-        V_[s] = min(actions_results)
+                V[V_i[s_['name']]] * s_['A'][a] for s_ in reachable]))
+        V_[i] = min(actions_results)
 
     return V_
 
