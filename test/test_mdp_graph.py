@@ -134,6 +134,10 @@ class TestMDPGraph(unittest.TestCase):
 
         assert success, "Initializes the graph correctly"
 
+    def test_get_actions(self):
+        actions = mdp_graph.get_actions(graph)
+        self.assertSetEqual(set(actions), set(['N', 'S', 'E']))
+
     def test_unexpanded_states_1(self):
         mdp_g = mdp_graph.init_graph(graph)
 

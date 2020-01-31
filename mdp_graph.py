@@ -3,6 +3,17 @@ import numpy as np
 # bpsg: best partial solution graph
 
 
+def flatten(l):
+    return [x for l_i in l for x in l_i]
+
+
+def get_actions(mdp):
+    adjs = map(lambda s: s['Adj'], mdp.values())
+    actions = map(lambda s: list(s['A'].keys()), flatten(adjs))
+
+    return list(set(flatten(actions)))
+
+
 def get_unexpanded_states(mdp, bpsg):
     return list(
         filter(lambda x: not mdp[x]["expanded"], bpsg.keys())
