@@ -10,7 +10,6 @@ def flatten(l):
 def get_actions(mdp):
     adjs = map(lambda s: s['Adj'], mdp.values())
     actions = map(lambda s: list(s['A'].keys()), flatten(adjs))
-
     return list(set(flatten(actions)))
 
 
@@ -79,28 +78,33 @@ def find_reachable(s, a, mdp):
     ))
 
 
-def bellman(V, V_i,  A, Z, mdp, c=1):
+def bellman(V, V_i, A, Z, mdp, c=1):
     V_ = np.array(V)
+
+    pi = np.array([None] * len(A))
     for i, s in enumerate(Z):
         actions_results = []
         for a in A:
             reachable = find_reachable(s, a, mdp)
             actions_results.append(c + sum([
                 V[V_i[s_['name']]] * s_['A'][a] for s_ in reachable]))
-        V_[i] = min(actions_results)
+        i_min = np.argmin(actions_results)
+        pi[i] = A[i_min]
+        V_[i] = actions_results[i_min]
 
-    return V_
+    return V_, pi
 
 
 def value_iteration(V, V_i, A, Z, mdp, c=1, epsilon=1e-3, n_iter=1000):
 
     i = 1
+    pi = None
     while(True):
-        V_ = bellman(V, V_i, A, Z, mdp, c)
+        V_, pi = bellman(V, V_i, A, Z, mdp, c)
         if i == n_iter or np.linalg.norm(V_ - V, np.inf) < epsilon:
             break
         V = V_
 
         i += 1
 
-    return V_
+    return V_, pi
