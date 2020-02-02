@@ -278,3 +278,26 @@ class TestMDPGraph(unittest.TestCase):
 
         self.assertListEqual(pi.tolist(), ['E', 'E', None])
         assert arrays_diff < epsilon
+
+    def test_update_partial_solution(self):
+        pi = ['E', None, None]
+
+        new_bpsg = mdp_graph.update_partial_solution(pi, S, bpsg, graph)
+
+        self.assertDictEqual(new_bpsg, {
+            "1": {
+                "Adj": [
+                    {
+                        "name": "1",
+                        "A": {"E": 0.5}
+                    },
+                    {
+                        "name": "2",
+                        "A": {"E": 0.5}
+                    }
+                ]
+            },
+            "2": {
+                "Adj": []
+            },
+        })

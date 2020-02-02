@@ -108,3 +108,43 @@ def value_iteration(V, V_i, A, Z, mdp, c=1, epsilon=1e-3, n_iter=1000):
         i += 1
 
     return V_, pi
+
+
+def update_action_partial_solution(s, a, bpsg, mdp):
+    """
+        Updates partial solution given pair of state and action
+    """
+    bpsg_ = bpsg.copy()
+    s_obj = bpsg_[s]
+    s_obj['Adj'] = []
+    reachable = find_reachable(s, a, mdp)
+    for s_obj_ in reachable:
+        s_ = s_obj_["name"]
+        s_obj['Adj'].append({
+            'name': s_,
+            'A': {a: s_obj_['A'][a]}
+        })
+        if s_ not in bpsg:
+            bpsg_ = add_state_graph(s_, bpsg_)
+    return bpsg_
+
+
+def update_partial_solution(pi, S, bpsg, mdp):
+    bpsg_ = bpsg.copy()
+
+    for s, a in zip(S, pi):
+        if s not in bpsg:
+            continue
+
+        s_obj = bpsg_[s]
+
+        if len(s_obj['Adj']) == 0:
+            if a != None:
+                bpsg_ = update_action_partial_solution(s, a, bpsg_, mdp)
+        else:
+            best_current_action = s_obj['Adj'][0]['A'][0]
+
+            if a != None and best_current_action != a:
+                bpsg_ = update_action_partial_solution(s, a, bpsg_, mdp)
+
+    return bpsg_
