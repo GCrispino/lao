@@ -161,14 +161,13 @@ class TestMDPGraph(unittest.TestCase):
         mdp_g = mdp_graph.init_graph(graph)
         init_state_neighbours = map(
             lambda _s: _s["name"], mdp_g[init_state]['Adj'])
-        new_explicit_graph = mdp_graph.expand_state(
+        new_explicit_graph, mdp_g = mdp_graph.expand_state(
             init_state, mdp_g, explicit_graph)
+
+        assert mdp_g[init_state]['expanded']
 
         for s in init_state_neighbours:
             assert s in new_explicit_graph
-
-        init_state_new_neighbours_explicit = map(
-            lambda s: s["name"], new_explicit_graph[init_state]['Adj'])
 
     def test_find_ancestors(self):
         ancestors = mdp_graph.find_ancestors('1', bpsg)

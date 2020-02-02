@@ -36,7 +36,11 @@ def expand_state(s, mdp, explicit_graph):
             "A": mdp_n_obj
         })
 
-    return new_explicit_graph
+    mdp_ = mdp.copy()
+
+    mdp_[s]['expanded'] = True
+
+    return new_explicit_graph, mdp_
 
 
 def init_graph(graph):
