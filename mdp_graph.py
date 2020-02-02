@@ -21,12 +21,12 @@ def get_unexpanded_states(mdp, bpsg):
 
 def expand_state(s, mdp, explicit_graph):
 
-    # Ver estados vizinhos de 's' no mdp que não foram expandidos
+    # Get 's' neighbour states that were not expanded
     neighbour_states = map(lambda _s: _s["name"], mdp[s]['Adj'])
     unexpanded_neighbours = filter(
         lambda _s: not mdp[_s]['expanded'], neighbour_states)
 
-    # - Adicionar novos estados vazios na lista de adjacências do vértice 's'
+    # Add new empty states to 's' adjacency list
     new_explicit_graph = explicit_graph
     for n in unexpanded_neighbours:
         new_explicit_graph = add_state_graph(n, new_explicit_graph)
