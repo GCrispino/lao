@@ -263,7 +263,7 @@ class TestMDPGraph(unittest.TestCase):
         expected = np.array([3.0, 1.0, 0.0])
         arrays_diff = np.linalg.norm(V_ - expected, np.inf)
 
-        self.assertListEqual(pi.tolist(), ['E', None, None])
+        self.assertListEqual(pi.tolist(), ['E'])
         assert arrays_diff < epsilon
 
     def test_value_iteration_2(self):
@@ -275,11 +275,11 @@ class TestMDPGraph(unittest.TestCase):
         expected = np.array([4.0, 2.0, 0.0])
         arrays_diff = np.linalg.norm(V_ - expected, np.inf)
 
-        self.assertListEqual(pi.tolist(), ['E', 'E', None])
+        self.assertListEqual(pi.tolist(), ['E', 'E'])
         assert arrays_diff < epsilon
 
     def test_update_partial_solution(self):
-        pi = ['E', None, None]
+        pi = ['E']
 
         new_bpsg = mdp_graph.update_partial_solution(pi, S, bpsg, graph)
 
