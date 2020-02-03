@@ -85,7 +85,7 @@ def find_reachable(s, a, mdp):
 def bellman(V, V_i, A, Z, mdp, c=1):
     V_ = np.array(V)
 
-    pi = np.array([None] * len(A))
+    pi = np.array([None] * len(Z))
     for i, s in enumerate(Z):
         actions_results = []
         for a in A:
