@@ -15,7 +15,8 @@ def get_actions(mdp):
 
 def get_unexpanded_states(mdp, bpsg):
     return list(
-        filter(lambda x: not mdp[x]["expanded"], bpsg.keys())
+        filter(lambda x: not mdp[x]["expanded"]
+               and not mdp[x]["goal"], bpsg.keys())
     )
 
 

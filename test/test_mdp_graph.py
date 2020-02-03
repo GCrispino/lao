@@ -4,6 +4,7 @@ import numpy as np
 
 graph = {
     "1": {
+        "goal": False,
         "Adj": [
             {
                 "name": "1",
@@ -20,6 +21,7 @@ graph = {
         ]
     },
     "2": {
+        "goal": False,
         "Adj": [
             {
                 "name": "2",
@@ -36,6 +38,7 @@ graph = {
         ]
     },
     "3": {
+        "goal": True,
         "Adj": [{
             "name": "3",
             "A": {
@@ -114,7 +117,8 @@ bpsg_3 = {
                 }
             }
         ]
-    }
+    },
+    "3": {"Adj": []}
 }
 
 A = ['N', 'S', 'E']
@@ -143,6 +147,15 @@ class TestMDPGraph(unittest.TestCase):
 
         unexpanded = mdp_graph.get_unexpanded_states(mdp_g, bpsg)
         self.assertListEqual(unexpanded, ['1'])
+
+    def test_unexpanded_states_2(self):
+        mdp_g = mdp_graph.init_graph(graph)
+        # Expand states '1' and '2':
+        explicit, mdp_g = mdp_graph.expand_state('1', mdp_g, bpsg)
+        bpsg_, mdp_g = mdp_graph.expand_state('2', mdp_g, explicit)
+
+        unexpanded = mdp_graph.get_unexpanded_states(mdp_g, bpsg_2)
+        self.assertListEqual(unexpanded, [])
 
     def test_add_state_graph(self):
         g_ = mdp_graph.add_state_graph('4', graph)
