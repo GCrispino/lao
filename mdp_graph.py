@@ -93,8 +93,8 @@ def bellman(V, V_i, A, Z, mdp, c=1):
             actions_results.append(c + sum([
                 V[V_i[s_['name']]] * s_['A'][a] for s_ in reachable]))
         i_min = np.argmin(actions_results)
-        pi[i] = A[i_min]
-        V_[i] = actions_results[i_min]
+        pi[V_i[s]] = A[i_min]
+        V_[V_i[s]] = actions_results[i_min]
 
     return V_, pi
 
@@ -146,7 +146,7 @@ def update_partial_solution(pi, S, bpsg, mdp):
             if a != None:
                 bpsg_ = update_action_partial_solution(s, a, bpsg_, mdp)
         else:
-            best_current_action = s_obj['Adj'][0]['A'][0]
+            best_current_action = next(iter(s_obj['Adj'][0]['A'].keys()))
 
             if a != None and best_current_action != a:
                 bpsg_ = update_action_partial_solution(s, a, bpsg_, mdp)
