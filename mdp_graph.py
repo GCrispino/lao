@@ -94,7 +94,8 @@ def bellman(V, V_i, A, Z, mdp, c=1):
         actions_results = []
         for a in A:
             reachable = find_reachable(s, a, mdp)
-            actions_results.append(c + sum([
+            c_ = 0 if mdp[s]['goal'] else c
+            actions_results.append(c_ + sum([
                 V[V_i[s_['name']]] * s_['A'][a] for s_ in reachable]))
         i_min = np.argmin(actions_results)
         pi[V_i[s]] = A[i_min]
