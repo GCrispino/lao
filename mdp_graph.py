@@ -86,11 +86,13 @@ def find_reachable(s, a, mdp):
     ))
 
 
+# TODO:
+#    The cost 'c' should be defined through a function or list/dict
 def bellman(V, V_i, A, Z, mdp, c=1):
     V_ = np.array(V)
 
     pi = np.array([None] * len(Z))
-    for i, s in enumerate(Z):
+    for s in Z:
         actions_results = []
         for a in A:
             reachable = find_reachable(s, a, mdp)
