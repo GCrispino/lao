@@ -21,6 +21,9 @@ def get_unexpanded_states(mdp, bpsg):
 
 
 def expand_state(s, mdp, explicit_graph):
+    if mdp[s]['goal']:
+        raise ValueError(
+            'State %d can\'t be expanded because it is a goal state' % int(s))
 
     # Get 's' neighbour states that were not expanded
     neighbour_states = map(lambda _s: _s["name"], mdp[s]['Adj'])

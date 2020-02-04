@@ -1,6 +1,7 @@
 import mdp_graph
 import unittest
 import numpy as np
+import pytest
 
 graph = {
     "1": {
@@ -181,6 +182,13 @@ class TestMDPGraph(unittest.TestCase):
 
         for s in init_state_neighbours:
             assert s in new_explicit_graph
+
+    def test_expand_state_goal(self):
+        state = '3'
+        mdp_g = mdp_graph.init_graph(graph)
+        with pytest.raises(ValueError, match="State %d can't be expanded because it is a goal state" % int(state)):
+            new_explicit_graph, mdp_g = mdp_graph.expand_state(
+                state, mdp_g, {})
 
     def test_find_ancestors(self):
         ancestors = mdp_graph.find_ancestors('1', bpsg)
