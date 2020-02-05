@@ -34,7 +34,8 @@ def expand_state(s, mdp, explicit_graph):
     new_explicit_graph = explicit_graph
     for n in unexpanded_neighbours:
         new_explicit_graph = add_state_graph(n, new_explicit_graph)
-        mdp_n_obj = next(filter(lambda _s: _s["name"] == n, mdp[s]["Adj"]))
+        mdp_n_obj = next(map(lambda _s: _s['A'], filter(
+            lambda _s: _s["name"] == n, mdp[s]["Adj"])))
         new_explicit_graph[s]["Adj"].append({
             "name": n,
             "A": mdp_n_obj
