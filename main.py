@@ -18,7 +18,7 @@ parser = argparse.ArgumentParser(description='LAO* algorithm implementation.')
 
 parser.add_argument('--file', dest='file_input',
                     default=DEFAULT_FILE_INPUT, help="Environment JSON file used as input (default: %s)" % DEFAULT_FILE_INPUT)
-parser.add_argument('--epsilon', dest='epsilon',
+parser.add_argument('--epsilon', dest='epsilon', type=float,
                     default=DEFAULT_EPSILON, help="Epsilon used for convergence (default: %s)" % str(DEFAULT_EPSILON))
 
 args = parser.parse_args()
