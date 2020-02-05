@@ -89,10 +89,9 @@ def find_reachable(s, a, mdp):
 
 # TODO:
 #    The cost 'c' should be defined through a function or list/dict
-def bellman(V, V_i, A, Z, mdp, c=1):
+def bellman(V, V_i, pi, A, Z, mdp, c=1):
     V_ = np.array(V)
 
-    pi = np.array([None] * len(Z))
     for s in Z:
         actions_results = []
         for a in A:
@@ -107,12 +106,11 @@ def bellman(V, V_i, A, Z, mdp, c=1):
     return V_, pi
 
 
-def value_iteration(V, V_i, A, Z, mdp, c=1, epsilon=1e-3, n_iter=1000):
+def value_iteration(V, V_i, pi, A, Z, mdp, c=1, epsilon=1e-3, n_iter=1000):
 
     i = 1
-    pi = None
     while(True):
-        V_, pi = bellman(V, V_i, A, Z, mdp, c)
+        V_, pi = bellman(V, V_i, pi, A, Z, mdp, c)
         if i == n_iter or np.linalg.norm(V_ - V, np.inf) < epsilon:
             break
         V = V_

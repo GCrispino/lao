@@ -26,12 +26,18 @@ args = parser.parse_args()
 mdp = read_json(args.file_input)
 A = mg.get_actions(mdp)
 S = list(mdp.keys())
+pi = np.array([None] * len(S))
 V_i = {S[i]: i for i in range(len(S))}
+print(A, S, V_i)
 
-heuristic = np.array([3.0, 2.0, 1.0, 0.0, 1.0, 2.0, 3.0, 4.0])
+#heuristic = np.array([3.0, 2.0, 1.0, 0.0, 1.0, 2.0, 3.0, 4.0])
+heuristic = np.zeros(len(S))
 
-V, pi = lao('1', heuristic, V_i, S, A,
+#heuristic = np.array([4.0, 3.0, 2.0, 1.0, 0.0, 5.0, 4.0, 3.0, 2.0, 1.0])
+
+V, pi = lao('1', heuristic, V_i, pi, S, A,
             mg.init_graph(mdp), epsilon=args.epsilon)
 
+print("V_i: ", V_i)
 print('V: ', V)
 print('pi: ', pi)

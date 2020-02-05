@@ -260,7 +260,8 @@ class TestMDPGraph(unittest.TestCase):
         # Test bellman equation after expanding state '1'
         Z = ['1']
         V = np.array([2.0, 1.0, 0.0])
-        V_, pi = mdp_graph.bellman(V, V_i, A, Z, graph)
+        pi = np.array([None] * len(S))
+        V_, pi = mdp_graph.bellman(V, V_i, pi, A, Z, graph)
 
         self.assertListEqual(pi[:1].tolist(), ['E'])
         self.assertListEqual(V_.tolist(), [2.5, 1, 0])
@@ -270,7 +271,8 @@ class TestMDPGraph(unittest.TestCase):
         Z = ['1', '2']
 
         V = np.array([3.0, 1.0, 0.0])
-        V_, pi = mdp_graph.bellman(V, V_i, A, Z, graph)
+        pi = np.array([None] * len(S))
+        V_, pi = mdp_graph.bellman(V, V_i, pi, A, Z, graph)
 
         self.assertListEqual(pi[:2].tolist(), ['E', 'E'])
         self.assertListEqual(V_.tolist(), [3, 1.5, 0])
@@ -278,25 +280,27 @@ class TestMDPGraph(unittest.TestCase):
     def test_value_iteration(self):
         Z = ['1']
         V = np.array([2.0, 1.0, 0.0])
+        pi = np.array([None] * len(S))
 
         epsilon = 1e-3
-        V_, pi = mdp_graph.value_iteration(V, V_i, A, Z, graph, 1, epsilon)
+        V_, pi = mdp_graph.value_iteration(V, V_i, pi, A, Z, graph, 1, epsilon)
         expected = np.array([3.0, 1.0, 0.0])
         arrays_diff = np.linalg.norm(V_ - expected, np.inf)
 
-        self.assertListEqual(pi.tolist(), ['E'])
+        self.assertListEqual(pi.tolist(), ['E', None, None])
         assert arrays_diff < epsilon
 
     def test_value_iteration_2(self):
         Z = ['1', '2']
         V = np.array([3.0, 1.0, 0.0])
+        pi = np.array([None] * len(S))
 
         epsilon = 1e-3
-        V_, pi = mdp_graph.value_iteration(V, V_i, A, Z, graph, 1, epsilon)
+        V_, pi = mdp_graph.value_iteration(V, V_i, pi, A, Z, graph, 1, epsilon)
         expected = np.array([4.0, 2.0, 0.0])
         arrays_diff = np.linalg.norm(V_ - expected, np.inf)
 
-        self.assertListEqual(pi.tolist(), ['E', 'E'])
+        self.assertListEqual(pi.tolist(), ['E', 'E', None])
         assert arrays_diff < epsilon
 
     def test_update_partial_solution(self):
