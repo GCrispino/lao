@@ -2,6 +2,7 @@ import mdp_graph
 import unittest
 import numpy as np
 import pytest
+from copy import deepcopy
 
 graph = {
     "1": {
@@ -133,7 +134,7 @@ class TestMDPGraph(unittest.TestCase):
         success = True
         for k in mdp_g:
             success &= mdp_g[k]['expanded'] == False
-            state = mdp_g[k].copy()
+            state = deepcopy(mdp_g[k])
             state.pop('expanded')
             success &= state == graph[k]
 

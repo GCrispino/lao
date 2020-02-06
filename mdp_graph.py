@@ -1,4 +1,5 @@
 import numpy as np
+from copy import deepcopy
 
 # bpsg: best partial solution graph
 
@@ -41,7 +42,7 @@ def expand_state(s, mdp, explicit_graph):
             "A": mdp_n_obj
         })
 
-    mdp_ = mdp.copy()
+    mdp_ = deepcopy(mdp)
 
     mdp_[s]['expanded'] = True
 
@@ -53,7 +54,7 @@ def init_graph(graph):
 
 
 def add_state_graph(s, graph):
-    graph_ = graph.copy()
+    graph_ = deepcopy(graph)
     graph_[str(s)] = {'Adj': []}
 
     return graph_
@@ -124,7 +125,7 @@ def update_action_partial_solution(s, a, bpsg, mdp):
     """
         Updates partial solution given pair of state and action
     """
-    bpsg_ = bpsg.copy()
+    bpsg_ = deepcopy(bpsg)
     s_obj = bpsg_[s]
     s_obj['Adj'] = []
     reachable = find_reachable(s, a, mdp)
@@ -140,7 +141,7 @@ def update_action_partial_solution(s, a, bpsg, mdp):
 
 
 def update_partial_solution(pi, S, bpsg, mdp):
-    bpsg_ = bpsg.copy()
+    bpsg_ = deepcopy(bpsg)
 
     for s, a in zip(S, pi):
         if s not in bpsg:
@@ -149,12 +150,12 @@ def update_partial_solution(pi, S, bpsg, mdp):
         s_obj = bpsg_[s]
 
         if len(s_obj['Adj']) == 0:
-            if a != None:
+            if a is not None:
                 bpsg_ = update_action_partial_solution(s, a, bpsg_, mdp)
         else:
             best_current_action = next(iter(s_obj['Adj'][0]['A'].keys()))
 
-            if a != None and best_current_action != a:
+            if a is not None and best_current_action != a:
                 bpsg_ = update_action_partial_solution(s, a, bpsg_, mdp)
 
     return bpsg_
