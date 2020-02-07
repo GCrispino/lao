@@ -1,5 +1,6 @@
 import numpy as np
 import mdp_graph as mg
+from copy import deepcopy
 
 
 def lao(s0, heuristic, V_i, pi, S, A, mdp, epsilon=1e-3):
@@ -8,7 +9,7 @@ def lao(s0, heuristic, V_i, pi, S, A, mdp, epsilon=1e-3):
             - implement convergence test
     """
     bpsg = {s0: {"Adj": []}}
-    explicit_graph = bpsg.copy()
+    explicit_graph = deepcopy(bpsg)
 
     i = 0
     unexpanded = mg.get_unexpanded_states(mdp, bpsg)
