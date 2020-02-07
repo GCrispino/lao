@@ -4,10 +4,6 @@ from copy import deepcopy
 
 
 def lao(s0, heuristic, V_i, pi, S, A, mdp, epsilon=1e-3):
-    """
-        TODO:
-            - implement convergence test
-    """
     bpsg = {s0: {"Adj": []}}
     explicit_graph = deepcopy(bpsg)
 
