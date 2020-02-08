@@ -4,17 +4,7 @@ import numpy as np
 import mdp_graph as mg
 import lao
 from unittest.mock import patch
-"""
 
-    Testar função convergence_test
-    heurística:
-        | 2 | 1.5 | 0 |
-        | 1 | 2   | 1 |
-    política inicial:
-        | S | E | 0 |
-        | E | E | N |
-
-"""
 graph = {
     "1": {
         "goal": False,
@@ -153,7 +143,7 @@ class TestLAO(unittest.TestCase):
         V = np.array([2, 1.5, 0, 1, 2, 1])
         pi = np.array([None] * len(S))
         V_, pi_ = lao.lao('1', V, V_i, pi, S, A, mg.init_graph(graph))
-        self.assertListEqual(pi_.tolist(), ['E', 'E', None, 'E', 'E', 'N'])
+        self.assertListEqual(pi_.tolist(), ['E', 'E', None, 'E', None, None])
 
     def test_lao_2(self):
         V = np.array([2.0, 1, 0, 3, 2, 1])
@@ -167,4 +157,4 @@ class TestLAO(unittest.TestCase):
         pi = np.array([None] * len(S))
         V_, pi_ = lao.lao('1', V, V_i, pi, S, A, mg.init_graph(graph))
 
-        self.assertListEqual(pi_.tolist(), ['E', 'E', None, 'E', 'E', 'N'])
+        self.assertListEqual(pi_.tolist(), ['E', 'E', None, 'E', None, None])

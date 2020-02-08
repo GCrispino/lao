@@ -3,6 +3,7 @@ import unittest
 import numpy as np
 import pytest
 from copy import deepcopy
+from utils import read_json
 
 graph = {
     "1": {
@@ -126,6 +127,8 @@ bpsg_3 = {
 A = ['N', 'S', 'E']
 S = list(graph.keys())
 V_i = {S[i]: i for i in range(len(S))}
+
+graph_env_1 = mdp_graph.init_graph(read_json('./env1.json'))
 
 
 class TestMDPGraph(unittest.TestCase):
@@ -325,4 +328,30 @@ class TestMDPGraph(unittest.TestCase):
             "2": {
                 "Adj": []
             },
+        })
+
+    def test_update_partial_solution_changes(self):
+        expanded_states = ['1', '2', '3', '4']
+
+        mdp = deepcopy(graph_env_1)
+        # mark states as expanded
+        for s in expanded_states:
+            mdp[s]['expanded'] = True
+
+        S_ = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
+        Z = ['3', '2', '1', '4']
+        V = [6.99999999, 5.99882507, 3.99986267, 1.99999237,
+             0., 5., 4., 3., 2., 1.]
+        pi = ['S', 'E', 'E', 'E', None, None, None, None, None, None]
+        bpsg_ = {'1': {'Adj': [{'A': {'E': 0.5}, 'name': '1'}, {'A': {'E': 0.5}, 'name': '2'}]},
+                 '2': {'Adj': [{'A': {'E': 0.5}, 'name': '2'}, {'A': {'E': 0.5}, 'name': '3'}]},
+                 '3': {'Adj': [{'A': {'E': 0.5}, 'name': '3'}, {'A': {'E': 0.5}, 'name': '4'}]},
+                 '4': {'Adj': []}}
+
+        new_bpsg = mdp_graph.update_partial_solution(pi, S_, bpsg_, mdp)
+
+        self.assertDictEqual(new_bpsg, {
+            '1': {'Adj': [{'A': {'S': 0.5}, 'name': '1'}, {'A': {'S': 0.5}, 'name': '6'}]},
+            '6': {'Adj': []}
+
         })

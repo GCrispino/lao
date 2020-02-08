@@ -127,6 +127,21 @@ def update_action_partial_solution(s, a, bpsg, mdp):
     """
     bpsg_ = deepcopy(bpsg)
     s_obj = bpsg_[s]
+
+    old_adj = None
+    for s_ in s_obj['Adj']:
+        s_name = s_['name']
+        if s_name != s:
+            old_adj = s_name
+
+    while old_adj:
+        adj = bpsg_.pop(old_adj)
+        old_adj = None
+        for s_ in adj['Adj']:
+            s_name = s_['name']
+            if s_name != s:
+                old_adj = s_name
+
     s_obj['Adj'] = []
     reachable = find_reachable(s, a, mdp)
     for s_obj_ in reachable:
@@ -137,6 +152,7 @@ def update_action_partial_solution(s, a, bpsg, mdp):
         })
         if s_ not in bpsg:
             bpsg_ = add_state_graph(s_, bpsg_)
+
     return bpsg_
 
 
@@ -144,7 +160,7 @@ def update_partial_solution(pi, S, bpsg, mdp):
     bpsg_ = deepcopy(bpsg)
 
     for s, a in zip(S, pi):
-        if s not in bpsg:
+        if s not in bpsg_:
             continue
 
         s_obj = bpsg_[s]
