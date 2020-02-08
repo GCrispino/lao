@@ -1,14 +1,9 @@
-import json
 import argparse
 import mdp_graph as mg
 import numpy as np
 from pprint import pprint
 from lao import lao
-
-
-def read_json(file_name):
-    with open(file_name) as json_data:
-        return json.load(json_data)
+from utils import read_json
 
 
 DEFAULT_FILE_INPUT = './env-paper.json'
