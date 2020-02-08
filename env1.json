@@ -1,6 +1,7 @@
 {
   "1": {
     "goal": false,
+    "heuristic": 4.0,
     "Adj": [
       {
         "name": "1",
@@ -23,6 +24,7 @@
   },
   "2": {
     "goal": false,
+    "heuristic": 3.0,
     "Adj": [
       {
         "name": "1",
@@ -49,6 +51,7 @@
   },
   "3": {
     "goal": false,
+    "heuristic": 2.0,
     "Adj": [
       {
         "name": "2",
@@ -75,6 +78,7 @@
   },
   "4": {
     "goal": false,
+    "heuristic": 1.0,
     "Adj": [
       {
         "name": "3",
@@ -101,6 +105,7 @@
   },
   "5": {
     "goal": true,
+    "heuristic": 0.0,
     "Adj": [
       {
         "name": "5",
@@ -115,6 +120,7 @@
   },
   "6": {
     "goal": false,
+    "heuristic": 5.0,
     "Adj": [
       {
         "name": "1",
@@ -135,6 +141,7 @@
   },
   "7": {
     "goal": false,
+    "heuristic": 4.0,
     "Adj": [
       {
         "name": "2",
@@ -156,6 +163,7 @@
   },
   "8": {
     "goal": false,
+    "heuristic": 3.0,
     "Adj": [
       {
         "name": "3",
@@ -177,6 +185,7 @@
   },
   "9": {
     "goal": false,
+    "heuristic": 2.0,
     "Adj": [
       {
         "name": "4",
@@ -198,6 +207,7 @@
   },
   "10": {
     "goal": false,
+    "heuristic": 1.0,
     "Adj": [
       {
         "name": "5",
