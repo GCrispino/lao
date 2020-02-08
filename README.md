@@ -11,3 +11,6 @@ $ python main.py --help
 ```
 
 Two environment files are provided as examples (two grid world test examples) in `env-paper.json` and `env1.json`.
+
+## Testing
+There is also a test suite defined in the `test` folder that can be run with `pytest`.
