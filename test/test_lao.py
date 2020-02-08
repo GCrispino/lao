@@ -1,9 +1,8 @@
-import pytest
 import unittest
+from unittest.mock import patch
 import numpy as np
 import mdp_graph as mg
 import lao
-from unittest.mock import patch
 
 graph = {
     "1": {

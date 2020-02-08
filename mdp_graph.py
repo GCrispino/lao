@@ -1,5 +1,5 @@
-import numpy as np
 from copy import deepcopy
+import numpy as np
 
 # bpsg: best partial solution graph
 
@@ -36,7 +36,7 @@ def expand_state(s, mdp, explicit_graph):
     for n in unexpanded_neighbours:
         new_explicit_graph = add_state_graph(n, new_explicit_graph)
         mdp_n_obj = next(map(lambda _s: _s['A'], filter(
-            lambda _s: _s["name"] == n, mdp[s]["Adj"])))
+            lambda _s, name=n: _s["name"] == name, mdp[s]["Adj"])))
         new_explicit_graph[s]["Adj"].append({
             "name": n,
             "A": mdp_n_obj
@@ -110,7 +110,7 @@ def bellman(V, V_i, pi, A, Z, mdp, c=1):
 def value_iteration(V, V_i, pi, A, Z, mdp, c=1, epsilon=1e-3, n_iter=1000):
 
     i = 1
-    while(True):
+    while True:
         V_, pi = bellman(V, V_i, pi, A, Z, mdp, c)
         if i == n_iter or np.linalg.norm(V_ - V, np.inf) < epsilon:
             break

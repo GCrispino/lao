@@ -1,7 +1,6 @@
 import argparse
-import mdp_graph as mg
 import numpy as np
-from pprint import pprint
+import mdp_graph as mg
 from lao import lao
 from utils import read_json
 
@@ -12,9 +11,11 @@ DEFAULT_EPSILON = 1e-3
 parser = argparse.ArgumentParser(description='LAO* algorithm implementation.')
 
 parser.add_argument('--file', dest='file_input',
-                    default=DEFAULT_FILE_INPUT, help="Environment JSON file used as input (default: %s)" % DEFAULT_FILE_INPUT)
+                    default=DEFAULT_FILE_INPUT,
+                    help="Environment JSON file used as input (default: %s)" % DEFAULT_FILE_INPUT)
 parser.add_argument('--epsilon', dest='epsilon', type=float,
-                    default=DEFAULT_EPSILON, help="Epsilon used for convergence (default: %s)" % str(DEFAULT_EPSILON))
+                    default=DEFAULT_EPSILON,
+                    help="Epsilon used for convergence (default: %s)" % str(DEFAULT_EPSILON))
 
 args = parser.parse_args()
 

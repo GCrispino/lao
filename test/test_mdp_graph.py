@@ -1,8 +1,8 @@
-import mdp_graph
 import unittest
+from copy import deepcopy
 import numpy as np
 import pytest
-from copy import deepcopy
+import mdp_graph
 from utils import read_json
 
 graph = {
@@ -136,7 +136,7 @@ class TestMDPGraph(unittest.TestCase):
         mdp_g = mdp_graph.init_graph(graph)
         success = True
         for k in mdp_g:
-            success &= mdp_g[k]['expanded'] == False
+            success &= not mdp_g[k]['expanded']
             state = deepcopy(mdp_g[k])
             state.pop('expanded')
             success &= state == graph[k]
@@ -190,8 +190,11 @@ class TestMDPGraph(unittest.TestCase):
     def test_expand_state_goal(self):
         state = '3'
         mdp_g = mdp_graph.init_graph(graph)
-        with pytest.raises(ValueError, match="State %d can't be expanded because it is a goal state" % int(state)):
-            new_explicit_graph, mdp_g = mdp_graph.expand_state(
+        with pytest.raises(
+                ValueError,
+                match="State %d can't be expanded because it is a goal state" % int(state)):
+
+            _, mdp_g = mdp_graph.expand_state(
                 state, mdp_g, {})
 
     def test_find_ancestors(self):

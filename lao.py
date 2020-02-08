@@ -1,6 +1,6 @@
+from copy import deepcopy
 import numpy as np
 import mdp_graph as mg
-from copy import deepcopy
 
 
 def lao(s0, heuristic, V_i, pi, S, A, mdp, epsilon=1e-3):
@@ -24,15 +24,15 @@ def lao(s0, heuristic, V_i, pi, S, A, mdp, epsilon=1e-3):
 
         if converged:
             break
-        else:
-            bpsg = mg.update_partial_solution(pi, S, bpsg, mdp)
-            unexpanded = mg.get_unexpanded_states(mdp, bpsg)
+        # else
+        bpsg = mg.update_partial_solution(pi, S, bpsg, mdp)
+        unexpanded = mg.get_unexpanded_states(mdp, bpsg)
     return V, pi
 
 
 def convergence_test(V, V_i, pi, A, Z, mdp, c=1, epsilon=1e-3):
     i = 0
-    while(True):
+    while True:
         old_pi = np.array(pi)
         V_, pi = mg.bellman(V, V_i, pi, A, Z, mdp, c)
         pi_ = np.array(pi)
