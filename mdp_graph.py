@@ -95,25 +95,27 @@ def find_reachable(s, a, mdp):
     ))
 
 
-def dfs_visit(i, colors, d, f, time, S, V_i, mdp):
+def dfs_visit(i, colors, d, f, time, S, V_i, mdp, fn=None):
     colors[i] = 'g'
     time[0] += 1
     d[i] = time[0]
-
     s = S[i]
+
+    if fn:
+        fn(s)
 
     for s_obj in mdp[s]['Adj']:
         s_ = s_obj['name']
         j = V_i[s_]
         if colors[j] == 'w':
-            dfs_visit(j, colors, d, f, time, S, V_i, mdp)
+            dfs_visit(j, colors, d, f, time, S, V_i, mdp, fn)
 
     colors[i] = 'b'
     time[0] += 1
     f[i] = time[0]
 
 
-def dfs(mdp):
+def dfs(mdp, fn=None):
     S = list(mdp.keys())
     len_s = len(S)
     V_i = {S[i]: i for i in range(len_s)}
@@ -126,7 +128,7 @@ def dfs(mdp):
         c = colors[i]
         s = S[i]
         if c == 'w':
-            dfs_visit(i, colors, d, f, time, S, V_i, mdp)
+            dfs_visit(i, colors, d, f, time, S, V_i, mdp, fn)
 
     return d, f, colors
 

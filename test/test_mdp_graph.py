@@ -381,8 +381,11 @@ class TestMDPGraph(unittest.TestCase):
             'y': {'Adj': [{'name': 'x'}]},
             'z': {'Adj': [{'name': 'z'}]},
         }
-        d, f, colors = mdp_graph.dfs(graph_ex)
+
+        trace = []
+        d, f, colors = mdp_graph.dfs(graph_ex, lambda s: trace.append(s))
 
         self.assertListEqual(colors, ['b', 'b', 'b', 'b', 'b', 'b'])
         self.assertListEqual(d, [1, 2, 9, 4, 3, 10])
         self.assertListEqual(f, [8, 7, 12, 5, 6, 11])
+        self.assertListEqual(trace, ['u', 'v', 'y', 'x', 'w', 'z'])
