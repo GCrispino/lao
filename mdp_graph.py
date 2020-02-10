@@ -182,7 +182,7 @@ def update_action_partial_solution(s, a, bpsg, mdp):
     while len(old_adjs) > 0:
         old_adj = old_adjs.pop()
         adj = bpsg_.pop(old_adj)
-        old_adjs = find_neighbours(s, adj['Adj'])
+        old_adjs = find_neighbours(old_adj, adj['Adj'])
 
     s_obj['Adj'] = []
     reachable = find_reachable(s, a, mdp)
