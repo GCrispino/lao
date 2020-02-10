@@ -135,6 +135,10 @@ def update_action_partial_solution(s, a, bpsg, mdp):
     bpsg_ = deepcopy(bpsg)
     s_obj = bpsg_[s]
 
+    """
+        TODO:
+            Substitute find_neighbours occurrences here for search to determine what states are unreachable
+    """
     old_adjs = find_neighbours(s, s_obj['Adj'])
 
     while len(old_adjs) > 0:
