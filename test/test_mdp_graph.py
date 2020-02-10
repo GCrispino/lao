@@ -358,3 +358,31 @@ class TestMDPGraph(unittest.TestCase):
             '6': {'Adj': []}
 
         })
+
+    def test_dfs(self):
+        d, f, colors = mdp_graph.dfs(graph)
+
+        self.assertListEqual(colors, ['b'] * len(S))
+        self.assertListEqual(d, [1, 2, 3])
+        self.assertListEqual(f, [6, 5, 4])
+
+    def test_dfs_2(self):
+        # No need to define the 'A' dict for each state
+        #   because it is only a graph to test dfs,
+        #   not mdp functinoality
+        graph_ex = {
+            'u': {'Adj': [
+                {'name': 'v'},
+                {'name': 'x'},
+            ]},
+            'v': {'Adj': [{'name': 'y'}]},
+            'w': {'Adj': [{'name': 'y'}, {'name': 'z'}]},
+            'x': {'Adj': [{'name': 'v'}]},
+            'y': {'Adj': [{'name': 'x'}]},
+            'z': {'Adj': [{'name': 'z'}]},
+        }
+        d, f, colors = mdp_graph.dfs(graph_ex)
+
+        self.assertListEqual(colors, ['b', 'b', 'b', 'b', 'b', 'b'])
+        self.assertListEqual(d, [1, 2, 9, 4, 3, 10])
+        self.assertListEqual(f, [8, 7, 12, 5, 6, 11])

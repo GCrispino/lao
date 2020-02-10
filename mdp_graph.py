@@ -95,6 +95,42 @@ def find_reachable(s, a, mdp):
     ))
 
 
+def dfs_visit(i, colors, d, f, time, S, V_i, mdp):
+    colors[i] = 'g'
+    time[0] += 1
+    d[i] = time[0]
+
+    s = S[i]
+
+    for s_obj in mdp[s]['Adj']:
+        s_ = s_obj['name']
+        j = V_i[s_]
+        if colors[j] == 'w':
+            dfs_visit(j, colors, d, f, time, S, V_i, mdp)
+
+    colors[i] = 'b'
+    time[0] += 1
+    f[i] = time[0]
+
+
+def dfs(mdp):
+    S = list(mdp.keys())
+    len_s = len(S)
+    V_i = {S[i]: i for i in range(len_s)}
+    # (w)hite, (g)ray or (b)lack
+    colors = ['w'] * len_s
+    d = [-1] * len_s
+    f = [-1] * len_s
+    time = [0]
+    for i in range(len_s):
+        c = colors[i]
+        s = S[i]
+        if c == 'w':
+            dfs_visit(i, colors, d, f, time, S, V_i, mdp)
+
+    return d, f, colors
+
+
 # TODO:
 #    The cost 'c' should be defined through a function or list/dict
 def bellman(V, V_i, pi, A, Z, mdp, c=1):
