@@ -101,14 +101,14 @@ def dfs_visit(i, colors, d, f, time, S, V_i, mdp, fn=None):
     d[i] = time[0]
     s = S[i]
 
-    if fn:
-        fn(s)
-
     for s_obj in mdp[s]['Adj']:
         s_ = s_obj['name']
         j = V_i[s_]
         if colors[j] == 'w':
             dfs_visit(j, colors, d, f, time, S, V_i, mdp, fn)
+
+    if fn:
+        fn(s)
 
     colors[i] = 'b'
     time[0] += 1
