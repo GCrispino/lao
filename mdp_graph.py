@@ -79,6 +79,13 @@ def find_ancestors(s, bpsg):
     return result
 
 
+def find_neighbours(s, adjs):
+    """ Find neighbours of s in adjacency list (except itself) """
+    return list(
+        map(lambda s_: s_['name'],
+            filter(lambda s_: s_['name'] != s, adjs)))
+
+
 def find_reachable(s, a, mdp):
     """ Find states that are reachable from state 's' after executing action 'a' """
     all_reachable_from_s = mdp[s]['Adj']
@@ -128,19 +135,12 @@ def update_action_partial_solution(s, a, bpsg, mdp):
     bpsg_ = deepcopy(bpsg)
     s_obj = bpsg_[s]
 
-    old_adj = None
-    for s_ in s_obj['Adj']:
-        s_name = s_['name']
-        if s_name != s:
-            old_adj = s_name
+    old_adjs = find_neighbours(s, s_obj['Adj'])
 
-    while old_adj:
+    while len(old_adjs) > 0:
+        old_adj = old_adjs.pop()
         adj = bpsg_.pop(old_adj)
-        old_adj = None
-        for s_ in adj['Adj']:
-            s_name = s_['name']
-            if s_name != s:
-                old_adj = s_name
+        old_adjs = find_neighbours(s, adj['Adj'])
 
     s_obj['Adj'] = []
     reachable = find_reachable(s, a, mdp)
