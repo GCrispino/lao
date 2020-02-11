@@ -95,6 +95,17 @@ def find_reachable(s, a, mdp):
     ))
 
 
+def find_unreachable(s0, mdp):
+    """ search for unreachable states using dfs """
+    S = list(mdp.keys())
+    len_s = len(S)
+    V_i = {S[i]: i for i in range(len_s)}
+    colors = ['w'] * len_s
+    dfs_visit(V_i[s0], colors, [-1] * len_s,
+              [-1] * len_s, [0], S, V_i, mdp)
+    return [S[i] for i, c in enumerate(colors) if c != 'b']
+
+
 def dfs_visit(i, colors, d, f, time, S, V_i, mdp, fn=None):
     colors[i] = 'g'
     time[0] += 1
@@ -166,23 +177,12 @@ def value_iteration(V, V_i, pi, A, Z, mdp, c=1, epsilon=1e-3, n_iter=1000):
     return V_, pi
 
 
-def update_action_partial_solution(s, a, bpsg, mdp):
+def update_action_partial_solution(s, s0, a, bpsg, mdp):
     """
         Updates partial solution given pair of state and action
     """
     bpsg_ = deepcopy(bpsg)
     s_obj = bpsg_[s]
-
-    """
-        TODO:
-            Substitute find_neighbours occurrences here for search to determine what states are unreachable
-    """
-    old_adjs = find_neighbours(s, s_obj['Adj'])
-
-    while len(old_adjs) > 0:
-        old_adj = old_adjs.pop()
-        adj = bpsg_.pop(old_adj)
-        old_adjs = find_neighbours(old_adj, adj['Adj'])
 
     s_obj['Adj'] = []
     reachable = find_reachable(s, a, mdp)
@@ -195,10 +195,16 @@ def update_action_partial_solution(s, a, bpsg, mdp):
         if s_ not in bpsg:
             bpsg_ = add_state_graph(s_, bpsg_)
 
+    unreachable = find_unreachable(s0, bpsg_)
+
+    for s_ in unreachable:
+        if s_ in bpsg_:
+            bpsg_.pop(s_)
+
     return bpsg_
 
 
-def update_partial_solution(pi, S, bpsg, mdp):
+def update_partial_solution(pi, s0, S, bpsg, mdp):
     bpsg_ = deepcopy(bpsg)
 
     for s, a in zip(S, pi):
@@ -209,11 +215,11 @@ def update_partial_solution(pi, S, bpsg, mdp):
 
         if len(s_obj['Adj']) == 0:
             if a is not None:
-                bpsg_ = update_action_partial_solution(s, a, bpsg_, mdp)
+                bpsg_ = update_action_partial_solution(s, s0, a, bpsg_, mdp)
         else:
             best_current_action = next(iter(s_obj['Adj'][0]['A'].keys()))
 
             if a is not None and best_current_action != a:
-                bpsg_ = update_action_partial_solution(s, a, bpsg_, mdp)
+                bpsg_ = update_action_partial_solution(s, s0, a, bpsg_, mdp)
 
     return bpsg_

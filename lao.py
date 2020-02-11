@@ -16,7 +16,7 @@ def lao(s0, heuristic, V_i, pi, S, A, mdp, epsilon=1e-3):
             explicit_graph, mdp = mg.expand_state(s, mdp, explicit_graph)
             Z = mg.find_ancestors(s, bpsg) + [s]
             V, pi = mg.value_iteration(V, V_i, pi, A, Z, mdp, epsilon=epsilon)
-            bpsg = mg.update_partial_solution(pi, S, bpsg, mdp)
+            bpsg = mg.update_partial_solution(pi, s0, S, bpsg, mdp)
             unexpanded = mg.get_unexpanded_states(mdp, bpsg)
             i += 1
         V, pi, converged = convergence_test(
@@ -25,7 +25,7 @@ def lao(s0, heuristic, V_i, pi, S, A, mdp, epsilon=1e-3):
         if converged:
             break
         # else
-        bpsg = mg.update_partial_solution(pi, S, bpsg, mdp)
+        bpsg = mg.update_partial_solution(pi, s0, S, bpsg, mdp)
         unexpanded = mg.get_unexpanded_states(mdp, bpsg)
     return V, pi
 
@@ -48,7 +48,7 @@ def ilao(s0, heuristic, V_i, pi, S, A, mdp, epsilon=1e-3):
                 # run bellman backup
                 V, pi = mg.bellman(V, V_i, pi, A, [s], mdp)
             mg.dfs(bpsg, visit)
-            bpsg = mg.update_partial_solution(pi, S, bpsg, mdp)
+            bpsg = mg.update_partial_solution(pi, s0, S, bpsg, mdp)
             unexpanded = mg.get_unexpanded_states(mdp, bpsg)
 
         V, pi, converged = convergence_test(
@@ -57,7 +57,7 @@ def ilao(s0, heuristic, V_i, pi, S, A, mdp, epsilon=1e-3):
         if converged:
             break
         # else
-        bpsg = mg.update_partial_solution(pi, S, bpsg, mdp)
+        bpsg = mg.update_partial_solution(pi, s0, S, bpsg, mdp)
         unexpanded = mg.get_unexpanded_states(mdp, bpsg)
     return V, pi
 

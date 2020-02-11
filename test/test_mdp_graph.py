@@ -313,7 +313,7 @@ class TestMDPGraph(unittest.TestCase):
     def test_update_partial_solution(self):
         pi = ['E']
 
-        new_bpsg = mdp_graph.update_partial_solution(pi, S, bpsg, graph)
+        new_bpsg = mdp_graph.update_partial_solution(pi, '1', S, bpsg, graph)
 
         self.assertDictEqual(new_bpsg, {
             "1": {
@@ -351,7 +351,7 @@ class TestMDPGraph(unittest.TestCase):
                  '3': {'Adj': [{'A': {'E': 0.5}, 'name': '3'}, {'A': {'E': 0.5}, 'name': '4'}]},
                  '4': {'Adj': []}}
 
-        new_bpsg = mdp_graph.update_partial_solution(pi, S_, bpsg_, mdp)
+        new_bpsg = mdp_graph.update_partial_solution(pi, '1', S_, bpsg_, mdp)
 
         self.assertDictEqual(new_bpsg, {
             '1': {'Adj': [{'A': {'S': 0.5}, 'name': '1'}, {'A': {'S': 0.5}, 'name': '6'}]},
