@@ -51,8 +51,9 @@ def ilao(s0, heuristic, V_i, pi, S, A, mdp, epsilon=1e-3):
             bpsg = mg.update_partial_solution(pi, s0, S, bpsg, mdp)
             unexpanded = mg.get_unexpanded_states(mdp, bpsg)
 
+        Z = [s_ for s_ in bpsg.keys() if not mdp[s_]['goal']]
         V, pi, converged = convergence_test(
-            V, V_i, pi, A, list(bpsg.keys()), mdp, epsilon=epsilon)
+            V, V_i, pi, A, Z, mdp, epsilon=epsilon)
 
         if converged:
             break
