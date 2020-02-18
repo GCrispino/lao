@@ -1,7 +1,8 @@
+from datetime import datetime
 import numpy as np
 import mdp_graph as mg
 from lao import lao, ilao
-from utils import read_json, parse_args
+from utils import read_json, output, parse_args
 
 args = parse_args()
 
@@ -23,3 +24,9 @@ elif args.algorithm == 'ilao':
 
 print('V: ', V)
 print('pi: ', pi)
+if args.output:
+    output_filename = str(datetime.time(datetime.now())) + '.json'
+    output_file_path = output(
+        output_filename, {'V': V.tolist(), 'pi': pi.tolist()})
+    if output_file_path:
+        print("Algorithm result written to ", output_file_path)

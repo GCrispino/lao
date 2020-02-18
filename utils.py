@@ -1,5 +1,6 @@
 import argparse
 import json
+import os
 
 
 def read_json(file_name):
@@ -10,6 +11,20 @@ def read_json(file_name):
 DEFAULT_FILE_INPUT = './env-paper.json'
 DEFAULT_EPSILON = 1e-3
 DEFAULT_ALGORITHM = 'lao'
+DEFAULT_OUTPUT = False
+DEFAULT_OUTPUT_DIR = "./output"
+
+
+def output(output_filename, data, output_dir=DEFAULT_OUTPUT_DIR):
+    if not os.path.isdir(output_dir):
+        os.makedirs(output_dir)
+
+    output_file_path = os.path.join(output_dir, output_filename)
+
+    with open(output_file_path, 'w') as fp:
+        json.dump(data, fp, indent=2)
+
+    return output_file_path
 
 
 def parse_args():
@@ -26,5 +41,9 @@ def parse_args():
     parser.add_argument('--algorithm', dest='algorithm', choices=['lao', 'ilao'],
                         default=DEFAULT_ALGORITHM,
                         help="Algorithm to run (default: %s)" % DEFAULT_ALGORITHM)
+    parser.add_argument('--write_output', dest='output',
+                        default=DEFAULT_OUTPUT,
+                        action="store_true",
+                        help="Defines whether or not to write the algorithm output to a file (default: %s)" % DEFAULT_OUTPUT)
 
     return parser.parse_args()
