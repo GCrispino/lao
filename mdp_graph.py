@@ -177,23 +177,34 @@ def value_iteration(V, V_i, pi, A, Z, mdp, c=1, epsilon=1e-3, n_iter=1000):
     return V_, pi
 
 
-def update_action_partial_solution(s, s0, a, bpsg, mdp):
+def update_action_partial_solution(s, s0, a, V_i, pi, bpsg, mdp):
     """
         Updates partial solution given pair of state and action
     """
     bpsg_ = deepcopy(bpsg)
-    s_obj = bpsg_[s]
+    i = 0
+    states = [s]
+    while len(states) > 0:
+        s = states.pop()
+        a = pi[V_i[s]]
+        s_obj = bpsg_[s]
 
-    s_obj['Adj'] = []
-    reachable = find_reachable(s, a, mdp)
-    for s_obj_ in reachable:
-        s_ = s_obj_["name"]
-        s_obj['Adj'].append({
-            'name': s_,
-            'A': {a: s_obj_['A'][a]}
-        })
-        if s_ not in bpsg:
-            bpsg_ = add_state_graph(s_, bpsg_)
+        s_obj['Adj'] = []
+        reachable = find_reachable(s, a, mdp)
+
+        for s_obj_ in reachable:
+            s_ = s_obj_['name']
+            s_obj['Adj'].append({
+                'name': s_,
+                'A': {a: s_obj_['A'][a]}
+            })
+            if s_ not in bpsg_:
+                bpsg_ = add_state_graph(s_, bpsg_)
+                bpsg_[s] = s_obj
+
+                if mdp[s_]['expanded']:
+                    states.append(s_)
+        i += 1
 
     unreachable = find_unreachable(s0, bpsg_)
 
@@ -204,7 +215,7 @@ def update_action_partial_solution(s, s0, a, bpsg, mdp):
     return bpsg_
 
 
-def update_partial_solution(pi, s0, S, bpsg, mdp):
+def update_partial_solution(pi, V_i, s0, S, bpsg, mdp):
     bpsg_ = deepcopy(bpsg)
 
     for s, a in zip(S, pi):
@@ -215,11 +226,13 @@ def update_partial_solution(pi, s0, S, bpsg, mdp):
 
         if len(s_obj['Adj']) == 0:
             if a is not None:
-                bpsg_ = update_action_partial_solution(s, s0, a, bpsg_, mdp)
+                bpsg_ = update_action_partial_solution(
+                    s, s0, a, V_i, pi, bpsg_, mdp)
         else:
             best_current_action = next(iter(s_obj['Adj'][0]['A'].keys()))
 
             if a is not None and best_current_action != a:
-                bpsg_ = update_action_partial_solution(s, s0, a, bpsg_, mdp)
+                bpsg_ = update_action_partial_solution(
+                    s, s0, a, V_i, pi, bpsg_, mdp)
 
     return bpsg_
