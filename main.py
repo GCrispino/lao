@@ -4,15 +4,24 @@ import mdp_graph as mg
 from lao import lao, ilao
 from utils import read_json, output, parse_args
 
+
+def try_int(key):
+    try:
+        return int(key)
+    except:
+        return key
+
+
 args = parse_args()
 
 mdp = mg.init_graph(read_json(args.file_input))
 A = mg.get_actions(mdp)
-S = list(mdp.keys())
+S = sorted(mdp.keys(), key=try_int)
 pi = np.array([None] * len(S))
 V_i = {S[i]: i for i in range(len(S))}
 
-heuristic = np.fromiter((map(lambda s: s['heuristic'], mdp.values())), float)
+heuristic = np.fromiter((map(lambda s: mdp[s]['heuristic'], S)), float)
+
 V = None
 
 if args.algorithm == 'lao':
