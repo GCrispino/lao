@@ -146,7 +146,7 @@ def dfs(mdp, fn=None):
 
 # TODO:
 #    The cost 'c' should be defined through a function or list/dict
-def bellman(V, V_i, pi, A, Z, mdp, c=1):
+def bellman(V, V_i, pi, A, Z, mdp, c=1, gamma=1):
     V_ = np.array(V)
 
     for s in Z:
@@ -154,7 +154,7 @@ def bellman(V, V_i, pi, A, Z, mdp, c=1):
         for a in A:
             reachable = find_reachable(s, a, mdp)
             c_ = 0 if mdp[s]['goal'] else c
-            actions_results.append(c_ + sum([
+            actions_results.append(c_ + gamma * sum([
                 V[V_i[s_['name']]] * s_['A'][a] for s_ in reachable]))
         i_min = np.argmin(actions_results)
         pi[V_i[s]] = A[i_min]
@@ -163,11 +163,11 @@ def bellman(V, V_i, pi, A, Z, mdp, c=1):
     return V_, pi
 
 
-def value_iteration(V, V_i, pi, A, Z, mdp, c=1, epsilon=1e-3, n_iter=1000):
+def value_iteration(V, V_i, pi, A, Z, mdp, c=1, epsilon=1e-3, n_iter=1000, gamma=1):
 
     i = 1
     while True:
-        V_, pi = bellman(V, V_i, pi, A, Z, mdp, c)
+        V_, pi = bellman(V, V_i, pi, A, Z, mdp, c, gamma=gamma)
         if i == n_iter or np.linalg.norm(V_ - V, np.inf) < epsilon:
             break
         V = V_

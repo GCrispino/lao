@@ -6,7 +6,7 @@ from utils import read_json, output, parse_args
 
 args = parse_args()
 
-mdp = read_json(args.file_input)
+mdp = mg.init_graph(read_json(args.file_input))
 A = mg.get_actions(mdp)
 S = list(mdp.keys())
 pi = np.array([None] * len(S))
@@ -16,11 +16,11 @@ heuristic = np.fromiter((map(lambda s: s['heuristic'], mdp.values())), float)
 V = None
 
 if args.algorithm == 'lao':
-    V, pi = lao('1', heuristic, V_i, pi, S, A,
-                mg.init_graph(mdp), epsilon=args.epsilon)
+    V, pi = lao(args.initial_state, heuristic, V_i, pi, S, A,
+                mdp, epsilon=args.epsilon, gamma=args.gamma)
 elif args.algorithm == 'ilao':
-    V, pi = ilao('1', heuristic, V_i, pi, S, A,
-                 mg.init_graph(mdp), epsilon=args.epsilon)
+    V, pi = ilao(args.initial_state, heuristic, V_i, pi, S, A,
+                 mdp, epsilon=args.epsilon, gamma=args.gamma)
 
 print('V: ', V)
 print('pi: ', pi)

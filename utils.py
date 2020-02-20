@@ -9,7 +9,9 @@ def read_json(file_name):
 
 
 DEFAULT_FILE_INPUT = './env-paper.json'
+DEFAULT_INITIAL_STATE = '1'
 DEFAULT_EPSILON = 1e-3
+DEFAULT_GAMMA = 1.0
 DEFAULT_ALGORITHM = 'lao'
 DEFAULT_OUTPUT = False
 DEFAULT_OUTPUT_DIR = "./output"
@@ -35,9 +37,15 @@ def parse_args():
     parser.add_argument('--file', dest='file_input',
                         default=DEFAULT_FILE_INPUT,
                         help="Environment JSON file used as input (default: %s)" % DEFAULT_FILE_INPUT)
+    parser.add_argument('--initial_state', dest='initial_state',
+                        default=DEFAULT_INITIAL_STATE,
+                        help="Initial state (default: %s)" % DEFAULT_INITIAL_STATE)
     parser.add_argument('--epsilon', dest='epsilon', type=float,
                         default=DEFAULT_EPSILON,
                         help="Epsilon used for convergence (default: %s)" % str(DEFAULT_EPSILON))
+    parser.add_argument('--gamma', dest='gamma', type=float,
+                        default=DEFAULT_GAMMA,
+                        help="Discount factor (default: %s)" % str(DEFAULT_GAMMA))
     parser.add_argument('--algorithm', dest='algorithm', choices=['lao', 'ilao'],
                         default=DEFAULT_ALGORITHM,
                         help="Algorithm to run (default: %s)" % DEFAULT_ALGORITHM)

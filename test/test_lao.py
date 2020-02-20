@@ -117,7 +117,7 @@ ct = lao.convergence_test
 
 
 def mocked_convergence_test(obj):
-    def fn(V, V_i, pi, A, Z, mdp, c=1, epsilon=1e-3):
+    def fn(V, V_i, pi, A, Z, mdp, c=1, epsilon=1e-3, gamma=1):
         if obj['i'] == 0:
             new_pi = np.array(['S', 'E', None, None, None, None])
             obj['i'] += 1
