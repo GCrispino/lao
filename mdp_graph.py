@@ -63,10 +63,10 @@ def add_state_graph(s, graph):
 #   the expanded state can be reached by following the current best solution"
 
 
-def find_ancestors(s, bpsg):
-    # Find states in bpsg that have 's' in the adjacent list (except from 's' itself):
+def __find_ancestors(s, bpsg, visited):
+    # Find states in bpsg that have 's' in the adjacent list (except from 's' itself and states that were already visited):
     direct_ancestors = list(
-        filter(lambda s_: s_ != s and len(
+        filter(lambda s_: s_ != s and (s_ not in visited) and len(
             list(filter(lambda s__: s__['name'] == s, bpsg[s_]['Adj']))
         ) > 0, bpsg)
     )
@@ -74,9 +74,14 @@ def find_ancestors(s, bpsg):
     result = [] + direct_ancestors
 
     for a in direct_ancestors:
-        result += find_ancestors(a, bpsg)
+        if a not in visited:
+            result += __find_ancestors(a, bpsg, visited.union([a]))
 
     return result
+
+
+def find_ancestors(s, bpsg):
+    return __find_ancestors(s, bpsg, frozenset())
 
 
 def find_neighbours(s, adjs):
